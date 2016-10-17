@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html ng-app="reddit">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css" media="screen" title="no title">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Domine|Gloria+Hallelujah|Libre+Franklin|Montserrat|Raleway|Roboto+Condensed" rel="stylesheet">
+    <title>Reddit Clone</title>
+</head>
+
+<body ng-controller="post">
+    <header>
+        <div class="header">
+            <h2>Reddit Clone</h2>
+            <button ng-click="showform()" type="submit" name="SubmitPost"><span class="fa fa-plus-circle"></span> Submit Post</button>
+            <input type="text" name="search" placeholder="Search" ng-model="search">
+            <h3>
+          Sort by
+        </h3>
+            <select ng-change="showvalue()" class="sort" name="sort" ng-model="sort" ng-init="sort='vote'">
+                <option value="vote">Votes</option>
+                <option value="time">Date</option>
+                <option value="title">Title</option>
+            </select>
+        </div>
+    </header>
+    <div class="mainform" ng-show='view.showForm'>
+        <form ng-submit="submitpost()" name="postform">
+            <label for="title">Title</label>
+            <input type="text" name="title" ng-model="newPost.title" ng-minlength="3" minlength="3" ng-maxlength="20" maxlength="20" ng-class="{'red': postform.title.$error.minlength, 'green':postform.title.$valid }" required>
+            <label for="author">Author</label>
+            <input type="text" name="author" ng-model="newPost.author" ng-maxlength="20" maxlength="20" ng-minlength="3" minlength="3" ng-class="{'red': postform.author.$error.minlength, 'green':postform.author.$valid }" required>
+            <label for="image">Image URL</label>
+            <input type="url" name="image" ng-model="newPost.image" ng-minlength="3" minlength="3" ng-class="{'red': postform.image.$error.url, 'green':postform.image.$valid }" required>
+            <label for="description">Description</label>
+            <input type="text" name="description" ng-model="newPost.description" ng-minlength="15 " minlength="15" ng-class="{'red': postform.description.$error.minlength, 'green':postform.description.$valid }" required>
+            <button type="submit" name="submitpost">Submit</button>
+        </form>
+    </div>
+    <div class="posts" ng-repeat="(index,post) in view | filter:search ">
+        <div class="postimg" ng-style="{'background-image':'url({{post.image}})'}">
+        </div>
+        <div class="postdetails">
+            <div class="postTitle">
+                <h3>{{post.title}}</h3>
+                <button ng-click="like(index); ratingcolor(index)" type="button" name="like"><span class="fa fa-thumbs-up fa-2x"></span></button>
+                <h4 ng-style="{'color':post.color} ">{{post.vote}}</h4>
+                <button ng-click="dislike(index); ratingcolor(index) " type="button " name="dislike "><span class="fa fa-thumbs-down fa-2x "></span></button>
+            </div>
+            <div class="postbody ">
+                <div>
+                    <h4>By: {{post.author}}</h4>
+                    <p>
+                        {{post.description}}
+                    </p>
+                </div>
+            </div>
+            <div class="postcomment ">
+                <span class="fa fa-clock-o fa-2 ">
+                </span>
+                <p>
+                    {{post.time| amCalendar}}
+                </p>
+                <button type="button" ng-click="showcomment(index) " ng-show="post.comments.length ">
+                    <span class="fa fa-comment ">
+                    </span> <span>
+                       {{post.comments.length}}
+                    </span>
+                    <ng-pluralize count="post.comments.length " when="{ '0': '', '1' : 'comment', 'other': 'comments'} ">
+                    </ng-pluralize>
+                </button>
+                <button type="button" ng-click="showcommentform(index)">Add a Comment</button>
+            </div>
+            <div>
+                <form ng-show="post.showcommentForm " ng-submit="postcomment(index) " name="commentform ">
+                    <label for="author ">Author</label>
+                    <input name="author " ng-minlength="2 " maxlength="18 " minlength="2 " ng-class="{ 'red': commentform.author.$error.minlength, 'green':commentform.author.$valid } " type="text " ng-model="newcomment[index].author ">
+                    <label for="text ">Comment</label>
+                    <input name="text " ng-minlength="3 " minlength="3 " ng-class="{ 'red': commentform.text.$error.minlength, 'green':commentform.text.$valid } " type="text " ng-model="newcomment[index].text ">
+                    <button type="submit ">Add Comment</button>
+                </form>
+            </div>
+            <div class="comments " ng-show="post.showcomment " ng-repeat="comment in post.comments ">
+                <h5>{{comment.author}} worte: </h5>
+                <p>
+                    {{comment.text}}
+                </p>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js ">
+    </script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js ">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/1.0.0/angular-moment.js "></script>
+    <script src="app.js ">
+    </script>
+</body>
+
+</html>
