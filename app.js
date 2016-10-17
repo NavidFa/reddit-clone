@@ -25,6 +25,7 @@ angular.module('reddit', ['angularMoment', 'ngAnimate'])
             $scope.newPost.image = ""
             $scope.newPost.description = ""
             $scope.view.showForm = false;
+            mainform.$setPristine();
         }
         $scope.like = function(post) {
             post.vote += 1
@@ -40,6 +41,7 @@ angular.module('reddit', ['angularMoment', 'ngAnimate'])
             post.showcommentForm = false;
             post.user = "";
             post.text = "";
+            commentform.$setPristine();
         }
         $scope.showcommentform = function(post) {
             post.showcommentForm = true;
