@@ -1,4 +1,4 @@
-angular.module('reddit', ['angularMoment','ngAnimate'])
+angular.module('reddit', ['angularMoment', 'ngAnimate'])
     .controller('post', ['$scope', 'moment', function($scope, moment) {
         $scope.view = [];
         $scope.newPost = {}
@@ -19,7 +19,6 @@ angular.module('reddit', ['angularMoment','ngAnimate'])
                 showcommentForm: false,
                 showcomment: false,
                 color: 'black'
-
             });
             $scope.newPost.title = ""
             $scope.newPost.author = ""
@@ -35,7 +34,7 @@ angular.module('reddit', ['angularMoment','ngAnimate'])
         }
         $scope.postcomment = function(post) {
             post.comments.push({
-                user:post.user,
+                user: post.user,
                 text: post.text
             });;
             post.showcommentForm = false;
@@ -60,5 +59,4 @@ angular.module('reddit', ['angularMoment','ngAnimate'])
                 post.color = 'green'
             }
         }
-
     }])
