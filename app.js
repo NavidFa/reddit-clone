@@ -27,37 +27,37 @@ angular.module('reddit', ['angularMoment','ngAnimate'])
             $scope.newPost.description = ""
             $scope.view.showForm = false;
         }
-        $scope.like = function(index) {
-            $scope.view[index].vote += 1
+        $scope.like = function(post) {
+            post.vote += 1
         }
-        $scope.dislike = function(index) {
-            $scope.view[index].vote -= 1
+        $scope.dislike = function(post) {
+            post.vote -= 1
         }
-        $scope.postcomment = function(index) {
-            $scope.view[index].comments.push({
-                author: $scope.newcomment[index].author,
-                text: $scope.newcomment[index].text
+        $scope.postcomment = function(post) {
+            post.comments.push({
+                user:post.user,
+                text: post.text
             });;
-            $scope.view[index].showcommentForm = false;
-            $scope.newcomment[index].author = "";
-            $scope.newcomment[index].text = "";
+            post.showcommentForm = false;
+            post.user = "";
+            post.text = "";
         }
-        $scope.showcommentform = function(index) {
-            $scope.view[index].showcommentForm = true;
+        $scope.showcommentform = function(post) {
+            post.showcommentForm = true;
         }
-        $scope.showcomment = function(index) {
-            $scope.view[index].showcomment = !$scope.view[index].showcomment
+        $scope.showcomment = function(post) {
+            post.showcomment = !post.showcomment
         }
         $scope.showvalue = function() {
             console.log($scope.sort);
         }
-        $scope.ratingcolor = function(index) {
-            if ($scope.view[index].vote == 0) {
-                $scope.view[index].color = 'black'
-            } else if ($scope.view[index].vote < 0) {
-                $scope.view[index].color = 'red'
+        $scope.ratingcolor = function(post) {
+            if (post.vote == 0) {
+                post.color = 'black'
+            } else if (post.vote < 0) {
+                post.color = 'red'
             } else {
-                $scope.view[index].color = 'green'
+                post.color = 'green'
             }
         }
 

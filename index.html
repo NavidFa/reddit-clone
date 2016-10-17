@@ -18,8 +18,8 @@
             <h3>
           Sort by
         </h3>
-            <select ng-change="showvalue()" class="sort" name="sort" ng-model="sort" ng-init="sort='vote'">
-                <option value="vote">Votes</option>
+            <select ng-change="showvalue()" class="sort" name="sort" ng-model="sort" ng-init="sort='-vote'">
+                <option value="-vote">Votes</option>
                 <option value="time">Date</option>
                 <option value="title">Title</option>
             </select>
@@ -38,15 +38,15 @@
             <button type="submit" name="submitpost">Submit</button>
         </form>
     </div>
-    <div class="posts" ng-repeat="(index,post) in view | filter:search ">
+    <div class="posts" ng-repeat="(index,post) in view | filter:search | orderBy:sort">
         <div class="postimg" ng-style="{'background-image':'url({{post.image}})'}">
         </div>
         <div class="postdetails">
             <div class="postTitle">
                 <h3>{{post.title}}</h3>
-                <button ng-click="like(index); ratingcolor(index)" type="button" name="like"><span class="fa fa-thumbs-up fa-2x"></span></button>
+                <button ng-click="like(post); ratingcolor(post)" type="button" name="like"><span class="fa fa-thumbs-up fa-2x"></span></button>
                 <h4 ng-style="{'color':post.color} ">{{post.vote}}</h4>
-                <button ng-click="dislike(index); ratingcolor(index) " type="button " name="dislike "><span class="fa fa-thumbs-down fa-2x "></span></button>
+                <button ng-click="dislike(post); ratingcolor(post) " type="button " name="dislike "><span class="fa fa-thumbs-down fa-2x "></span></button>
             </div>
             <div class="postbody ">
                 <div>
@@ -62,7 +62,7 @@
                 <p>
                     {{post.time| amCalendar}}
                 </p>
-                <button type="button" ng-click="showcomment(index) " ng-show="post.comments.length ">
+                <button type="button" ng-click="showcomment(post) " ng-show="post.comments.length ">
                     <span class="fa fa-comment ">
                     </span> <span>
                        {{post.comments.length}}
@@ -70,19 +70,19 @@
                     <ng-pluralize count="post.comments.length " when="{ '0': '', '1' : 'comment', 'other': 'comments'} ">
                     </ng-pluralize>
                 </button>
-                <button type="button" ng-click="showcommentform(index)">Add a Comment</button>
+                <button type="button" ng-click="showcommentform(post)">Add a Comment</button>
             </div>
             <div>
-                <form ng-show="post.showcommentForm " ng-submit="postcomment(index) " name="commentform ">
-                    <label for="author ">Author</label>
-                    <input name="author " ng-minlength="2 " maxlength="18 " minlength="2 " ng-class="{ 'red': commentform.author.$error.minlength, 'green':commentform.author.$valid } " type="text " ng-model="newcomment[index].author ">
+                <form ng-show="post.showcommentForm " ng-submit="postcomment(post) " name="commentform ">
+                    <label for="user ">Author</label>
+                    <input name="user " ng-minlength="2 " maxlength="18 " minlength="2 " ng-class="{ 'red': commentform.user.$error.minlength, 'green':commentform.user.$valid } " type="text " ng-model="post.user ">
                     <label for="text ">Comment</label>
-                    <input name="text " ng-minlength="3 " minlength="3 " ng-class="{ 'red': commentform.text.$error.minlength, 'green':commentform.text.$valid } " type="text " ng-model="newcomment[index].text ">
+                    <input name="text " ng-minlength="3 " minlength="3 " ng-class="{ 'red': commentform.text.$error.minlength, 'green':commentform.text.$valid } " type="text " ng-model="post.text ">
                     <button type="submit ">Add Comment</button>
                 </form>
             </div>
             <div class="comments " ng-show="post.showcomment " ng-repeat="comment in post.comments ">
-                <h5>{{comment.author}} worte: </h5>
+                <h5>{{comment.user}} worte: </h5>
                 <p>
                     {{comment.text}}
                 </p>
